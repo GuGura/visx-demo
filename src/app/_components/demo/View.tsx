@@ -1,6 +1,7 @@
 "use client";
-import Example from "@/app/_components/GradientAreaBase";
+import ExampleBars from "@/app/_components/demo/ExampleBars";
 import { useEffect, useRef, useState } from "react";
+import { GradientArea } from "@/app/_components/demo/GradientArea";
 
 export default function View() {
   const ref = useRef();
@@ -25,7 +26,8 @@ export default function View() {
       className={"w-full max-w-[1000px] border border-amber-100"}
       ref={ref as any}
     >
-      <Example height={500} width={width} />
+      <ExampleBars height={500} width={width} events={true} />
+      <GradientArea />
     </div>
   );
 }
