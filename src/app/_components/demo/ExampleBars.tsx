@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Bar } from "@visx/shape";
 import { Group } from "@visx/group";
 import { GradientTealBlue } from "@visx/gradient";
@@ -50,7 +50,9 @@ export default function ExampleBars({
       }),
     [yMax],
   );
-
+  useEffect(() => {
+    console.log(data.map(getLetter));
+  }, []);
   return width < 10 ? null : (
     <svg width={width} height={height}>
       {/*  @visx/gradient : 배경컬러 */}
@@ -61,13 +63,10 @@ export default function ExampleBars({
         {data.map((d) => {
           const letter = getLetter(d);
           const barWidth = xScale.bandwidth();
-          console.log("barWidth::", barWidth);
           const barHeight = yMax - (yScale(getLetterFrequency(d)) ?? 0);
-          console.log("barHeight::", barHeight);
           const barX = xScale(letter);
-          console.log("barX::", barX);
           const barY = yMax - barHeight;
-          console.log("barY::", barY);
+
           return (
             <Bar
               key={`bar-${letter}`}

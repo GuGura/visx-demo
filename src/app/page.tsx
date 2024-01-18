@@ -1,6 +1,8 @@
-import View from "@/app/_components/demo/View";
 import BarType1 from "@/app/_components/implement/BarType1";
+import ExampleBars from "@/app/_components/demo/ExampleBars";
 
 export default function Home() {
-  return <BarType1 />;
+  return <ExampleBars height={300} width={600} />;
 }
+
+//<ExampleBars height={300} width={600} />;
