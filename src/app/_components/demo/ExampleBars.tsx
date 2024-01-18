@@ -45,7 +45,6 @@ export default function ExampleBars({
     () =>
       scaleLinear<number>({
         range: [yMax, 0],
-        round: true,
         domain: [0, Math.max(...data.map(getLetterFrequency))],
       }),
     [yMax],
