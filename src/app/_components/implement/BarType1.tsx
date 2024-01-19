@@ -37,58 +37,74 @@ export default function BarType1({
   height?: number;
   data: any;
 }) {
-  const xMax = width;
+  let xMax = width;
   const yMax = height;
   console.log(data);
   // const data = useMemo(() => getDatesFrom2021to2024(), []);
 
   /*
-             https://d3js.org/d3-scale/band
-             scaleBand(domain, range)
-             const x = d3.scaleBand(["a", "b", "c"], [0, 960]);
-             x("a"); // 0
-             x("b"); // 320
-             x("c"); // 640
-             x("d"); // undefined
-             scaleBand에서 도메인은 x축 키값들을 의미
+               https://d3js.org/d3-scale/band
+               scaleBand(domain, range)
+               const x = d3.scaleBand(["a", "b", "c"], [0, 960]);
+               x("a"); // 0
+               x("b"); // 320
+               x("c"); // 640
+               x("d"); // undefined
+               scaleBand에서 도메인은 x축 키값들을 의미
 
-             band.bandwidth()
-             Returns the width of each band. // 각 밴드의 너비를 반환
-            */
+               band.bandwidth()
+               Returns the width of each band. // 각 밴드의 너비를 반환
+              */
   const xScale = useMemo(
     () =>
       scaleBand<string>({
         range: [100, xMax - 100],
         reverse: true,
         domain: data.map(getDate),
-        padding: 0.3,
+        padding: 0.15,
       }),
     [xMax],
   );
 
   /*
-             https://d3js.org/d3-scale/linear
-             scaleLinear(domain, range)
-             d3.scaleLinear([0, 100], ["red", "blue"])
+               https://d3js.org/d3-scale/linear
+               scaleLinear(domain, range)
+               d3.scaleLinear([0, 100], ["red", "blue"])
 
-             domain 지정 안하면 default [0, 1]
-             d3.scaleLinear(["red", "blue"]) // default domain of [0, 1]
+               domain 지정 안하면 default [0, 1]
+               d3.scaleLinear(["red", "blue"]) // default domain of [0, 1]
 
-             domain은 원본데이터의 범위
-             range는 출력에티어의 범위
-            */
+               domain은 원본데이터의 범위
+               range는 출력에티어의 범위
+              */
+
+  const chartConfig = {
+    verticalMargin: 100,
+    leftMargin: 100,
+    rightMargin: 100,
+  };
+
+  const yDomain = useMemo(() => {
+    if (!!data === false) {
+      return [0, 0];
+    }
+
+    const min = Math.min(...data.map(getStockValue));
+    const max = Math.max(...data.map(getStockValue));
+    const absMax = Math.max(Math.abs(min), Math.abs(max));
+
+    return [0, absMax];
+  }, [data]);
 
   const yScale = useMemo(
     () =>
       scaleLinear<number>({
-        range: [0, yMax - 100],
-        domain: [
-          Math.min(...data.map(getStockValue)) - 1000,
-          Math.max(...data.map(getStockValue)),
-        ],
+        range: [0, height * 0.5 - chartConfig.verticalMargin],
+        domain: yDomain,
       }),
     [yMax],
   );
+
   if (!data) return;
   return (
     <svg width={width} height={height}>
@@ -96,24 +112,45 @@ export default function BarType1({
       <rect width={width} height={height} fill={"url(#bg)"} />
       <Group>
         {data?.map((d: Props) => {
-          const barWidth = xScale.bandwidth();
-          /* const xScale <= 여기서 이미 x위치값을 다 그려놨고 xScale(d.date) <= 매핑되는 x위치값을 가져와서 Bar에 넣어주면 된다.*/
-          const barX = xScale(d?.date);
-          const barHeight = yScale(Number(d?.price) ?? 0);
-          const barY = yMax - barHeight;
-          return (
-            // barWidth <= x축의 너비 , barHeight <= y축의 너비 (껍데기를 만들고)
-            // xScale(d.date) <= x축의 위치, yMax - barHeight <= y축의 위치 (껍데기를 위치시킨다.)
-            <Bar
-              key={d?.date}
-              width={barWidth}
-              height={barHeight}
-              x={barX}
-              fill={"#338a3e"}
-              y={barY}
-              onClick={() => console.log(JSON.stringify(Object.values(d)))}
-            />
-          );
+          if (d?.price > 0) {
+            const barWidth = xScale.bandwidth();
+            /* const xScale <= 여기서 이미 x위치값을 다 그려놨고 xScale(d.date) <= 매핑되는 x위치값을 가져와서 Bar에 넣어주면 된다.*/
+            const barHeight = yScale(Number(d?.price) ?? 0);
+            const barX = xScale(d?.date);
+            const barY = yMax * 0.5 - barHeight;
+
+            return (
+              <Bar
+                key={d?.date}
+                width={barWidth}
+                height={barHeight}
+                x={barX}
+                fill={"#338a3e"}
+                y={barY}
+                onClick={() => console.log(JSON.stringify(Object.values(d)))}
+              />
+            );
+          } else {
+            const barWidth = xScale.bandwidth();
+            const price = Math.abs(Number(d?.price));
+
+            /* const xScale <= 여기서 이미 x위치값을 다 그려놨고 xScale(d.date) <= 매핑되는 x위치값을 가져와서 Bar에 넣어주면 된다.*/
+            const barHeight = yScale(price);
+            const barX = xScale(d?.date);
+            const barY = yMax * 0.5;
+
+            return (
+              <Bar
+                key={d?.date}
+                width={barWidth}
+                height={barHeight}
+                x={barX}
+                fill={"#d00000"}
+                y={barY}
+                onClick={() => console.log(JSON.stringify(Object.values(d)))}
+              />
+            );
+          }
         })}
       </Group>
     </svg>

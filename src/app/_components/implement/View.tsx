@@ -28,7 +28,7 @@ function getDatesFrom2021to2024() {
   while (currentDate <= endDate) {
     const object: any = {};
     object["date"] = format(currentDate, "yyyy년 MM월");
-    object["price"] = Math.ceil(Math.random() * 20000) - 5000;
+    object["price"] = Math.ceil(Math.random() * 5000) - 2500;
     dates.push(object);
     currentDate = addMonths(currentDate, 1); // Add one month at a time
   }
