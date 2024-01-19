@@ -43,18 +43,18 @@ export default function BarType1({
   // const data = useMemo(() => getDatesFrom2021to2024(), []);
 
   /*
-               https://d3js.org/d3-scale/band
-               scaleBand(domain, range)
-               const x = d3.scaleBand(["a", "b", "c"], [0, 960]);
-               x("a"); // 0
-               x("b"); // 320
-               x("c"); // 640
-               x("d"); // undefined
-               scaleBand에서 도메인은 x축 키값들을 의미
+                 https://d3js.org/d3-scale/band
+                 scaleBand(domain, range)
+                 const x = d3.scaleBand(["a", "b", "c"], [0, 960]);
+                 x("a"); // 0
+                 x("b"); // 320
+                 x("c"); // 640
+                 x("d"); // undefined
+                 scaleBand에서 도메인은 x축 키값들을 의미
 
-               band.bandwidth()
-               Returns the width of each band. // 각 밴드의 너비를 반환
-              */
+                 band.bandwidth()
+                 Returns the width of each band. // 각 밴드의 너비를 반환
+                */
   const xScale = useMemo(
     () =>
       scaleBand<string>({
@@ -67,19 +67,19 @@ export default function BarType1({
   );
 
   /*
-               https://d3js.org/d3-scale/linear
-               scaleLinear(domain, range)
-               d3.scaleLinear([0, 100], ["red", "blue"])
+                 https://d3js.org/d3-scale/linear
+                 scaleLinear(domain, range)
+                 d3.scaleLinear([0, 100], ["red", "blue"])
 
-               domain 지정 안하면 default [0, 1]
-               d3.scaleLinear(["red", "blue"]) // default domain of [0, 1]
+                 domain 지정 안하면 default [0, 1]
+                 d3.scaleLinear(["red", "blue"]) // default domain of [0, 1]
 
-               domain은 원본데이터의 범위
-               range는 출력에티어의 범위
-              */
+                 domain은 원본데이터의 범위
+                 range는 출력에티어의 범위
+                */
 
   const chartConfig = {
-    verticalMargin: 100,
+    verticalMargin: 50,
     leftMargin: 100,
     rightMargin: 100,
   };
