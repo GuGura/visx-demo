@@ -5,7 +5,22 @@ import { addMonths, format } from "date-fns";
 import { ParentSize } from "@visx/responsive";
 
 export default function View() {
-  const data: any[] = getDatesFrom2021to2024().slice(25);
+  const data: any[] = [
+    { date: "2023년 02월", price: 1937 },
+    { date: "2023년 03월", price: -1367 },
+    { date: "2023년 04월", price: -1500 },
+    { date: "2023년 05월", price: 1926 },
+    { date: "2023년 06월", price: -477 },
+    { date: "2023년 07월", price: -696 },
+    { date: "2023년 08월", price: -27 },
+    { date: "2023년 09월", price: -838 },
+    { date: "2023년 10월", price: -107 },
+    { date: "2023년 11월", price: -21 },
+    { date: "2023년 12월", price: 1566 },
+    { date: "2024년 01월", price: -1782 },
+  ];
+
+  // const data: any[] = getDatesFrom2021to2024().slice(25);
 
   return (
     <div
