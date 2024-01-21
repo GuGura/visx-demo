@@ -8,6 +8,7 @@ import browserUsage, {
 } from "@visx/mock-data/lib/mocks/browserUsage";
 import { animated, useTransition, to } from "@react-spring/web";
 import { pieColor } from "@/app/_components/colors";
+import { Text } from "@visx/text";
 
 // data and types
 type BrowserNames = keyof Browsers;
@@ -34,7 +35,7 @@ const getBrowserColor = scaleOrdinal({
   domain: browserNames,
   range: pieColor.slice(0, browserNames.length),
 });
-const defaultMargin = { top: 20, right: 20, bottom: 20, left: 20 };
+const defaultMargin = { top: 50, right: 20, bottom: 50, left: 20 };
 
 export type PieProps = {
   width: number;
@@ -55,14 +56,17 @@ export default function ExamplePie({
 
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
-  const radius = Math.min(innerWidth, innerHeight) / 2;
+  const radius = 100;
   const centerY = innerHeight / 2;
   const centerX = innerWidth / 2;
-  const donutThickness = 50;
-
+  const donutThickness = 30;
+  function toNumberFormatOfKor(num: number) {
+    return num.toLocaleString("ko-KR");
+  }
+  console.log(browsers);
   return (
     <svg width={width} height={height}>
-      <rect rx={14} width={width} height={height} fill="white" />
+      <rect rx={14} width={width} height={height} fill="black" />
       <Group top={centerY + margin.top} left={centerX + margin.left}>
         <Pie
           data={
@@ -91,20 +95,10 @@ export default function ExamplePie({
             />
           )}
         </Pie>
+        <Text verticalAnchor="start" textAnchor="middle" fill={"white"}>
+          {`width: ${innerWidth}/  height:${innerHeight}`}
+        </Text>
       </Group>
-      {animate && (
-        <text
-          textAnchor="end"
-          x={width - 16}
-          y={height - 16}
-          fill="white"
-          fontSize={11}
-          fontWeight={300}
-          pointerEvents="none"
-        >
-          Click segments to update
-        </text>
-      )}
     </svg>
   );
 }
