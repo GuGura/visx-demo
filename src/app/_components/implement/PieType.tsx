@@ -15,11 +15,6 @@ export type PieProps = {
   margin?: typeof defaultMargin;
   animate?: boolean;
 };
-
-function toNumberFormatOfKor(num: number) {
-  return num.toLocaleString("ko-KR");
-}
-
 const legendGlyphSize = 12;
 const pieChartConfig = {};
 export default function PieType({
@@ -39,7 +34,7 @@ export default function PieType({
 
   const centerX = innerWidth / 2;
   const centerY = innerHeight / 2;
-  console.log(transformedData);
+
   return (
     <>
       <div>
@@ -83,7 +78,12 @@ export default function PieType({
                 />
               )}
             </Pie>
-            <Text verticalAnchor="start" textAnchor="middle">
+            <Text
+              verticalAnchor="start"
+              textAnchor="middle"
+              className={"break-all text-[12px]"}
+              width={200}
+            >
               {selectedSymbol
                 ? transformedData[selectedSymbol].toLocaleString()
                 : totalPrice.toLocaleString()}
@@ -96,16 +96,24 @@ export default function PieType({
           labelFormat={(label) => `${label.toUpperCase()}`}
         >
           {(labels) => (
-            <div className={"flex w-[180px] flex-col justify-center pl-[10px]"}>
+            <div className={"flex w-[200px] flex-col justify-center pl-[10px]"}>
               {labels.map((label, i) => (
                 <LegendItem
                   key={`legend-quantile-${i}`}
                   margin="1px 0px"
                   onClick={() => {
-                    alert(`clicked: ${JSON.stringify(label)}`);
+                    setSelectedSymbol(
+                      selectedSymbol && selectedSymbol === label.text
+                        ? null
+                        : label.text,
+                    );
                   }}
                 >
-                  <div className={"flex flex-1 text-[14px] text-[#0D1421]"}>
+                  <div
+                    className={
+                      "flex flex-1 rounded-full px-[5px] py-[2px] text-[14px] text-[#0D1421] hover:bg-gray-200"
+                    }
+                  >
                     <div className={"flex flex-1 items-center"}>
                       <svg width={legendGlyphSize} height={legendGlyphSize}>
                         <circle
@@ -188,7 +196,6 @@ function AnimatedPie<Datum>({
           )}
           fill={getColor(arc)}
           onClick={() => onClickDatum(arc)}
-          onTouchStart={() => onClickDatum(arc)}
         />
         {hasSpaceForLabel && (
           <animated.g style={{ opacity: props.opacity }}>
@@ -231,7 +238,7 @@ const data: PieData[] = [
   },
   {
     symbol: "SPA",
-    price: 12000000,
+    price: 120000,
   },
   {
     symbol: "GENE",
